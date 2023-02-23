@@ -1,0 +1,44 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# shinymousetrap
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of shinymousetRap is to ...
+
+## Installation
+
+Install the development version of shinymousetrap from [GitHub](https://github.com/) with: 
+
+```{r eval=FALSE}
+# install.packages("devtools")
+if(!require(mousetrap)){
+  devtools::install_github("martinasladek/mousetrap")
+}
+
+devtools::install_github("martinasladek/shinymousetrap")
+```
+
+Note that the [mousetRap package](https://github.com/martinasladek/mousetrap) must be installed in order to use this shiny app. 
+
+## Example
+
+Run the app: 
+
+```{r eval=FALSE}
+shinymousetrap::mousetrap_checkr()
+```
