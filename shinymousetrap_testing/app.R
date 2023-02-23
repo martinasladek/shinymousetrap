@@ -8,13 +8,13 @@
 #
 
 library(dplyr)
-library(DT)
 library(ggplot2)
 library(faux)
 library(ggrain)
 library(shinydashboard)
 library(shiny)
 library(tibble)
+library(DT)
 
 # Define UI for application that draws a histogram
 id_names <- c("id", "ID", "i.d.", "id_num", "id_no")
@@ -105,7 +105,7 @@ ui <- dashboardPage(
                         fluidRow(align = "center",
                                  box(width = 12, collapsible = TRUE,
                                      title = "Dataset",
-                                     DT::dataTableOutput("full_data")),
+                                     shiny::dataTableOutput("full_data")),
 
                         )
                     )
@@ -251,7 +251,7 @@ server <- function(input, output, session) {
 
         # Full data  --------------------------------------------------------------
 
-        output$full_data <- DT::renderDataTable({
+        output$full_data <- shiny::renderDataTable({
             DT::datatable(
                 rvs$sniffy_data_messy |>
                     dplyr::mutate(
