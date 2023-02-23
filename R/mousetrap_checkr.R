@@ -113,7 +113,7 @@ mousetrap_checkr <- function(...) {
               fluidRow(align = "center",
                        box(width = 12, collapsible = TRUE,
                            title = "Dataset",
-                           shiny::dataTableOutput("full_data")),
+                           DT::dataTableOutput("full_data")),
 
               )
             )
@@ -259,7 +259,7 @@ mousetrap_checkr <- function(...) {
 
       # Full data  --------------------------------------------------------------
 
-      output$full_data <- shiny::renderDataTable({
+      output$full_data <- DT::renderDataTable({
         DT::datatable(
           rvs$sniffy_data_messy |>
             dplyr::mutate(
