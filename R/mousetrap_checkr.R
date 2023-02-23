@@ -189,7 +189,7 @@ mousetrap_checkr <- function(...) {
       output$data_cleaning <- renderTable({
 
         tibble::tibble(
-          Issue = c("Numer of missing values:", "Number of incorrect values:", "Total number of cases removed:"),
+          Issue = c("Number of missing values:", "Number of incorrect values:", "Total number of cases removed:"),
           N = c(rvs$n_missing, rvs$n_wrong_number, rvs$n_missing + rvs$n_wrong_number)
         )
 
