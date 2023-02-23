@@ -15,7 +15,7 @@
 #'
 #' @param ... Additional arguments
 #'
-#' @import dplyr DT ggplot2 faux ggrain shiny shinydashboard tibble tidyr
+#' @import dplyr ggplot2 faux ggrain shiny shinydashboard tibble tidyr
 #' @return runs a shiny app
 #' @export
 #'
