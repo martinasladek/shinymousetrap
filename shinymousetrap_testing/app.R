@@ -105,7 +105,7 @@ ui <- dashboardPage(
                         fluidRow(align = "center",
                                  box(width = 12, collapsible = TRUE,
                                      title = "Dataset",
-                                     shiny::dataTableOutput("full_data")),
+                                     DT::DTOutput("full_data")),
 
                         )
                     )
@@ -251,7 +251,7 @@ server <- function(input, output, session) {
 
         # Full data  --------------------------------------------------------------
 
-        output$full_data <- shiny::renderDataTable({
+        output$full_data <- DT::renderDT({
             DT::datatable(
                 rvs$sniffy_data_messy |>
                     dplyr::mutate(
