@@ -1,14 +1,15 @@
 
 
 
-library(dplyr)
-library(DT)
-library(ggplot2)
-library(faux)
-library(ggrain)
-library(shinydashboard)
-library(shiny)
-library(tibble)
+# library(dplyr)
+# library(DT)
+# library(ggplot2)
+# library(faux)
+# library(ggrain)
+# library(shinydashboard)
+# library(shiny)
+# library(tibble)
+# library(DT)
 
 #' Run a shiny app to check TAP results
 #'
@@ -112,7 +113,7 @@ mousetrap_checkr <- function(...) {
               fluidRow(align = "center",
                        box(width = 12, collapsible = TRUE,
                            title = "Dataset",
-                           DT::dataTableOutput("full_data")),
+                           shiny::dataTableOutput("full_data")),
 
               )
             )
@@ -258,7 +259,7 @@ mousetrap_checkr <- function(...) {
 
       # Full data  --------------------------------------------------------------
 
-      output$full_data <- DT::renderDataTable({
+      output$full_data <- shiny::renderDataTable({
         DT::datatable(
           rvs$sniffy_data_messy |>
             dplyr::mutate(
