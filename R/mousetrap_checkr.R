@@ -2,6 +2,7 @@
 
 
 library(dplyr)
+library(DT)
 library(ggplot2)
 library(faux)
 library(ggrain)
@@ -13,7 +14,7 @@ library(tibble)
 #'
 #' @param ... Additional arguments
 #'
-#' @import dplyr ggplot2 faux ggrain shiny shinydashboard tibble tidyr
+#' @import dplyr DT ggplot2 faux ggrain shiny shinydashboard tibble tidyr
 #' @return runs a shiny app
 #' @export
 #'
