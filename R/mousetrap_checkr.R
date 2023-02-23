@@ -268,7 +268,8 @@ mousetrap_checkr <- function(...) {
                 !!sym(reward) == 0 | !!sym(reward) > 100 ~ 2,
                 TRUE ~ 0
               )
-            ),
+            ) |>
+            dplyr::arrange(!!sym(condition)),
           options = list(
             paging = FALSE,
             columnDefs = list(list(visible=FALSE, targets=c(5)))
