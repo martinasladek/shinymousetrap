@@ -4,7 +4,7 @@
 #' @param digits number of digits
 #'
 #' @return a rounded character object
-#' @export
+#'
 #'
 #' @examples
 #' fr(0.0123423, 2)

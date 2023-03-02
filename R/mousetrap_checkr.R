@@ -181,18 +181,34 @@ mousetrap_checkr <- function(...) {
       #                                               "Interval", "Interval")))
 
 
-
-       rvs$sniffy_data_tidy[[condition_recoded]] = factor(
-        rvs$sniffy_data_tidy[[condition]],
-        labels = c("Ratio", "Ratio",
-                   "Interval", "Interval")
+      rvs$sniffy_data_tidy[[condition]] = dplyr::case_when(
+        rvs$sniffy_data_tidy[[condition]] == 0 ~ "Fixed Ratio 6",
+        rvs$sniffy_data_tidy[[condition]] == 1 ~ "Variable Ratio 6",
+        rvs$sniffy_data_tidy[[condition]] == 2 ~ "Fixed Interval 8",
+        rvs$sniffy_data_tidy[[condition]] == 3 ~ "Variable Interval 8"
       )
 
-       rvs$sniffy_data_tidy[[condition]] = factor(
-         rvs$sniffy_data_tidy[[condition]],
-         labels = c("Fixed Ratio 6", "Variable Ratio 6",
-                    "Fixed Interval 8", "Variable Interval 8")
-       )
+      rvs$sniffy_data_tidy[[condition_recoded]] = dplyr::case_when(
+        rvs$sniffy_data_tidy[[condition]] == "Fixed Ratio 6" | rvs$sniffy_data_tidy[[condition]] == "Variable Ratio 6" ~ "Ratio",
+        TRUE ~ "Interval"
+      )
+
+      #  rvs$sniffy_data_tidy[[condition_recoded]] = factor(
+      #   rvs$sniffy_data_tidy[[condition]],
+      #   labels = c("Ratio", "Ratio",
+      #              "Interval", "Interval")
+      # )
+      #
+      #  rvs$sniffy_data_tidy[[condition_recoded]] = factor(
+      #    rvs$sniffy_data_tidy[[condition_recoded]],
+      #    levels = c("Interval", "Ratio")
+      #  )
+#
+#        rvs$sniffy_data_tidy[[condition]] = factor(
+#          rvs$sniffy_data_tidy[[condition]],
+#          labels = c("Fixed Ratio 6", "Variable Ratio 6",
+#                     "Fixed Interval 8", "Variable Interval 8")
+#        )
 
       # Data cleaning summary  --------------------------------------------------
 
@@ -216,8 +232,8 @@ mousetrap_checkr <- function(...) {
           dplyr::group_by(!!sym(condition)) |>
           dplyr::summarise(
             n = dplyr::n(),
-            min = min(resp_per_rew, na.rm = TRUE),
-            max = max(resp_per_rew, na.rm = TRUE),
+            # min = min(resp_per_rew, na.rm = TRUE),
+            # max = max(resp_per_rew, na.rm = TRUE),
             mean = mean(resp_per_rew, na.rm = TRUE),
             median = median(resp_per_rew, na.rm = TRUE),
             sd = sd(resp_per_rew, na.rm = TRUE),
