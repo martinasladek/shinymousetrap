@@ -140,13 +140,13 @@ mousetrap_checkr <- function(...) {
       ## mess-up names
 
       set.seed(input$cand_no)
-      messed_up_names <- unlist(names_grid[sample(1:nrow(names_grid), size = 1), ])
-      names(rvs$sniffy_data_messy) <- messed_up_names
+      # messed_up_names <- unlist(names_grid[sample(1:nrow(names_grid), size = 1), ])
+      # names(rvs$sniffy_data_messy) <- messed_up_names
 
-      id = messed_up_names[1]
-      condition = messed_up_names[2]
-      responses = messed_up_names[3]
-      reward = messed_up_names[4]
+      id = names(rvs$sniffy_data_messy)[1]
+      condition = names(rvs$sniffy_data_messy)[2]
+      responses = names(rvs$sniffy_data_messy)[3]
+      reward = names(rvs$sniffy_data_messy)[4]
 
       condition_recoded = paste0(condition, "_recoded")
 
