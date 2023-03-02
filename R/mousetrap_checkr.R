@@ -96,10 +96,10 @@ mousetrap_checkr <- function(...) {
                            plotOutput("plot")
                        )
               ),
-              fluidRow(align = "center",
+              fluidRow(align = "left",
                        box(width = 12, collapsible = TRUE,
                            title = "t-test results",
-                           tableOutput("ttest")
+                           shiny::htmlOutput("ttest")
                        )
               )
             )
@@ -148,6 +148,8 @@ mousetrap_checkr <- function(...) {
       responses = messed_up_names[3]
       reward = messed_up_names[4]
 
+      condition_recoded = paste0(condition, "_recoded")
+
       # Data cleaning -----------------------------------------------------------
 
       # get number of NAs
@@ -177,11 +179,20 @@ mousetrap_checkr <- function(...) {
       #   dplyr::mutate(condition = factor(condition,
       #                                    labels = c("Ratio", "Ratio",
       #                                               "Interval", "Interval")))
-      rvs$sniffy_data_tidy[[condition]] = factor(
+
+
+
+       rvs$sniffy_data_tidy[[condition_recoded]] = factor(
         rvs$sniffy_data_tidy[[condition]],
         labels = c("Ratio", "Ratio",
                    "Interval", "Interval")
       )
+
+       rvs$sniffy_data_tidy[[condition]] = factor(
+         rvs$sniffy_data_tidy[[condition]],
+         labels = c("Fixed Ratio 6", "Variable Ratio 6",
+                    "Fixed Interval 8", "Variable Interval 8")
+       )
 
       # Data cleaning summary  --------------------------------------------------
 
@@ -228,9 +239,9 @@ mousetrap_checkr <- function(...) {
           #geom_point(position = position_jitter(width = 0.15), alpha = 0.15, size = 3) +
           stat_summary(fun.data = mean_cl_normal, size = 1) +
           ggrain::geom_rain(alpha = 0.2, point.args = list(size = 2, alpha = 0.2)) +
-          scale_colour_manual(values = c("#066379", "#833786")) +
-          scale_fill_manual(values = c("#066379", "#833786")) +
-          labs(x = "\nCondition", y = "Response/Reward ratio\n") +
+          scale_colour_manual(values = c("#066379", "#066379", "#833786", "#833786")) +
+          scale_fill_manual(values = c("#066379", "#066379", "#833786", "#833786")) +
+          labs(x = "\nReinforcement Schedule Condition", y = "Mean number of lever presses per reward\n") +
           theme_minimal() +
           theme(
             axis.title = element_text(face = "bold"),
@@ -241,20 +252,38 @@ mousetrap_checkr <- function(...) {
 
       # t-test summary ----------------------------------------------------------
 
-      output$ttest <- renderTable({
+      output$ttest <- renderUI({
 
-        sniffy_t_formula = formula(paste0("resp_per_rew~", condition))
+        sniffy_t_formula = formula(paste0("resp_per_rew~", condition_recoded))
 
         sniffy_t <- rvs$sniffy_data_tidy |>
           t.test(sniffy_t_formula, data = _)
 
-        tibble::tibble(
-          ratio_mean = sniffy_t$estimate[1],
-          int_mean = sniffy_t$estimate[2],
-          df = sniffy_t$parameter,
-          t.value = sniffy_t$statistic,
-          p.value = sniffy_t$p.value
+
+
+        HTML(
+          paste0(
+            '<p style="font-family:', "'Courier New'", '"', ">",
+            "Welch Two Sample t-test <br><br>",
+            "data: response_per_rew by ", condition, "<br>",
+            "t = ", fr(sniffy_t$statistic), ", df = ", fr(sniffy_t$parameter), " , p-value = ", fr(sniffy_t$p.value), "<br>",
+            "95 percent confidence interval: <br>",
+            fr(sniffy_t$conf.int[1], 6), ", ", fr(sniffy_t$conf.int[2], 6), "<br>",
+            "mean in group Interval: ", fr(sniffy_t$estimate[1], 6), "<br>",
+            "mean in group Ratio: ", fr(sniffy_t$estimate[2], 6),
+            "</p>"
+          )
         )
+
+
+
+        # tibble::tibble(
+        #   ratio_mean = sniffy_t$estimate[1],
+        #   int_mean = sniffy_t$estimate[2],
+        #   df = sniffy_t$parameter,
+        #   t.value = sniffy_t$statistic,
+        #   p.value = sniffy_t$p.value
+        # )
       })
 
       # Full data  --------------------------------------------------------------
