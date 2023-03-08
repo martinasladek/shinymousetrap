@@ -16,6 +16,7 @@ Install the development version of shinymousetrap from
 ``` r
 # install.packages("devtools")
 if(!require(mousetrap)){
+  devtools::install_github("debruine/faux")
   devtools::install_github("martinasladek/mousetrap")
 }
 
