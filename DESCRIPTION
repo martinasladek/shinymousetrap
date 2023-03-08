@@ -17,6 +17,7 @@ Imports:
     faux,
     ggplot2,
     ggrain,
+    stringr,
     shiny,
     shinydashboard,
     tibble,

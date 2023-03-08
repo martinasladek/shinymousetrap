@@ -7,7 +7,9 @@
 #'
 #'
 #' @examples
-#' fr(0.0123423, 2)
+#'  \dontrun{
+#'  fr(0.0123423, 2)
+#' }
 fr <- function(x, digits = 3){
   format(round(x, digits), nsmall = digits)
 }

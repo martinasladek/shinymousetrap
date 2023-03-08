@@ -39,7 +39,8 @@ mousetrap_checkr <- function(...) {
       sidebarMenu(
         id = "sidebar_menu",
         menuItem(text = "Data", tabName = "data"),
-        menuItem(text = "Results", tabName = "results", selected = TRUE)
+        menuItem(text = "Results", tabName = "results", selected = TRUE),
+        menuItem(text = "Check input", tabName = "check_input")
       ),
       numericInput(inputId = "cand_no", label = "Candidate number", value = 12345),
       fluidRow(actionButton(inputId = "check_results", label = "Check results"), align = "center")
@@ -118,6 +119,22 @@ mousetrap_checkr <- function(...) {
               )
             )
           )
+        ),
+        tabItem(
+          tabName = "check_input",
+          fluidRow(
+            column(
+              12,
+              fluidRow(align = "center",
+                       box(width = 12, collapsible = TRUE,
+                           title = "",
+                           fileInput("upload_tap", "Upload TAP:",
+                                     multiple = FALSE),
+                           shiny::htmlOutput("input_number"))
+
+              )
+            )
+          )
         )
       )
     )
@@ -132,6 +149,21 @@ mousetrap_checkr <- function(...) {
       n_missing = NULL,
       n_wrong_number = NULL
     )
+
+    output$input_number <- renderUI({
+
+      req(input$upload_tap)
+      cand_no <- cand_no_rescue(input$upload_tap$datapath)
+      HTML(
+        paste0(
+          '<h3 style="font-family:', "'Courier New'", '"', ">",
+          "Original cand_no input: ",
+          cand_no,
+          "</h3>"
+        )
+      )
+
+    })
 
     observeEvent(input$check_results, {
 
@@ -174,12 +206,6 @@ mousetrap_checkr <- function(...) {
       rvs$sniffy_data_tidy <- rvs$sniffy_data_tidy |>
         dplyr::mutate(resp_per_rew = !!sym(responses)/!!sym(reward))
 
-      # define conditions for the t-test
-      # rvs$sniffy_data_tidy <- rvs$sniffy_data_tidy |>
-      #   dplyr::mutate(condition = factor(condition,
-      #                                    labels = c("Ratio", "Ratio",
-      #                                               "Interval", "Interval")))
-
 
       rvs$sniffy_data_tidy[[condition]] = dplyr::case_when(
         rvs$sniffy_data_tidy[[condition]] == 0 ~ "Fixed Ratio 6",
@@ -193,22 +219,6 @@ mousetrap_checkr <- function(...) {
         TRUE ~ "Interval"
       )
 
-      #  rvs$sniffy_data_tidy[[condition_recoded]] = factor(
-      #   rvs$sniffy_data_tidy[[condition]],
-      #   labels = c("Ratio", "Ratio",
-      #              "Interval", "Interval")
-      # )
-      #
-      #  rvs$sniffy_data_tidy[[condition_recoded]] = factor(
-      #    rvs$sniffy_data_tidy[[condition_recoded]],
-      #    levels = c("Interval", "Ratio")
-      #  )
-#
-#        rvs$sniffy_data_tidy[[condition]] = factor(
-#          rvs$sniffy_data_tidy[[condition]],
-#          labels = c("Fixed Ratio 6", "Variable Ratio 6",
-#                     "Fixed Interval 8", "Variable Interval 8")
-#        )
 
       # Data cleaning summary  --------------------------------------------------
 
@@ -255,8 +265,8 @@ mousetrap_checkr <- function(...) {
           #geom_point(position = position_jitter(width = 0.15), alpha = 0.15, size = 3) +
           stat_summary(fun.data = mean_cl_normal, size = 1) +
           ggrain::geom_rain(alpha = 0.2, point.args = list(size = 2, alpha = 0.2)) +
-          scale_colour_manual(values = c("#066379", "#066379", "#833786", "#833786")) +
-          scale_fill_manual(values = c("#066379", "#066379", "#833786", "#833786")) +
+          scale_colour_manual(values = c("#066379", "#833786", "#066379", "#833786")) +
+          scale_fill_manual(values = c("#066379", "#833786", "#066379",  "#833786")) +
           labs(x = "\nReinforcement Schedule Condition", y = "Mean number of lever presses per reward\n") +
           theme_minimal() +
           theme(
@@ -290,16 +300,6 @@ mousetrap_checkr <- function(...) {
             "</p>"
           )
         )
-
-
-
-        # tibble::tibble(
-        #   ratio_mean = sniffy_t$estimate[1],
-        #   int_mean = sniffy_t$estimate[2],
-        #   df = sniffy_t$parameter,
-        #   t.value = sniffy_t$statistic,
-        #   p.value = sniffy_t$p.value
-        # )
       })
 
       # Full data  --------------------------------------------------------------
@@ -330,6 +330,7 @@ mousetrap_checkr <- function(...) {
       })
 
     })
+
   }
 
   shinyApp(ui, server, ...)

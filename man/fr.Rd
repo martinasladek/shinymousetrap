@@ -18,5 +18,7 @@ a rounded character object
 Format-round helper
 }
 \examples{
-fr(0.0123423, 2)
+ \dontrun{
+ fr(0.0123423, 2)
+}
 }
